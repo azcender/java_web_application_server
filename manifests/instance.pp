@@ -77,7 +77,7 @@ define java_web_application_server::instance (
 
   maven { $maven_application_directory:
     groupid     => $group_id,
-    artifact_id => $artifact_id,
+    artifactid => $artifact_id,
     version     => $version,
     repository  => $repository,
   }
