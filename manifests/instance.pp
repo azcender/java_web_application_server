@@ -75,7 +75,7 @@ define java_web_application_server::instance (
   $maven_application_directory  =
     "${instance_basedir}/${application_name}/webapps/${application_root}.jar"
 
-  ::maven { $maven_application_directory:
+  maven { $maven_application_directory:
     groupid     => $group_id,
     artifact_id => $artifact_id,
     version     => $version,
