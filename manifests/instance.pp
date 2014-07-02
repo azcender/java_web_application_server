@@ -75,7 +75,7 @@ define java_web_application_server::instance (
   # The application install directory is based off of the Tomcat instance
   # base directory
   $maven_application_directory  =
-    "${instance_basedir}/${application_root}/webapps/${application_root}.jar"
+    "${instance_basedir}/${application_root}/webapps/${application_root}.war"
 
   maven { $maven_application_directory:
     groupid    => $group_id,
