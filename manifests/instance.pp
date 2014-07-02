@@ -82,5 +82,6 @@ define java_web_application_server::instance (
     artifactid => $artifact_id,
     version    => $version,
     repos      => $repository,
+    packaging  => 'war',
   }
 }
