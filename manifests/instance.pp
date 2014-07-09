@@ -77,11 +77,15 @@ define java_web_application_server::instance (
   $maven_application_directory  =
     "${instance_basedir}/${application_root}/webapps/${application_root}.war"
 
-  maven { $maven_application_directory:
-    groupid    => $group_id,
-    artifactid => $artifact_id,
-    version    => $version,
-    repos      => $repository,
-    packaging  => 'war',
+  # Currently using an if statement since maven does not have an ensure
+  # property. Need to address
+  if $ensure != 'absent' {
+    maven { $maven_application_directory:
+      groupid    => $group_id,
+      artifactid => $artifact_id,
+      version    => $version,
+      repos      => $repository,
+      packaging  => 'war',
+    }
   }
 }
