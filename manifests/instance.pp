@@ -13,6 +13,8 @@
 #   ensure           - present, running, installed, stopped or absent
 #   instance_basedir - The directory the tomcat instance will be installed in
 #   application_root - URI the application will be under: 'http://../myapp'
+#   tomcat_libraries - A hash of libraries that should be added to the tomcat
+#                      instance
 #
 # Actions:
 #   Install tomcat instance
@@ -33,7 +35,8 @@ define java_web_application_server::instance (
   $server_port      = '8005',
   $ensure           = present,
   $instance_basedir = '/srv/tomcat',
-  $application_root = '') {
+  $application_root = '',
+  $tomcat_libraries = '') {
 
   # This currently requires tomcat and maven classes
   require tomcat, maven::maven
@@ -71,6 +74,9 @@ define java_web_application_server::instance (
     server_port      => $server_port,
     instance_basedir => $instance_basedir,
   }
+
+  # Create the libraries for the instance
+  create_resources(maven, $tomcat_libraries)
 
   # The application install directory is based off of the Tomcat instance
   # base directory
