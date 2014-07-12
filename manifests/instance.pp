@@ -26,6 +26,7 @@
 #   maestrodev/maven
 #
 define java_web_application_server::instance (
+  $tomcat_libraries = '',
   $group_id         = '',
   $artifact_id      = '',
   $repository       = '',
@@ -75,6 +76,9 @@ define java_web_application_server::instance (
     server_port      => $server_port,
     instance_basedir => $instance_basedir,
   }
+
+  # Add the tomcat libraries
+  create_resources('maven', $tomcat_libraries)
 
   # The application install directory is based off of the Tomcat instance
   # base directory
