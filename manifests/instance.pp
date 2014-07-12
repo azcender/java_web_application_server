@@ -38,8 +38,6 @@ define java_web_application_server::instance (
   $instance_basedir = '/srv/tomcat',
   $application_root = '') {
 
-  notify {$tomcat_libraries: }
-
   # This currently requires tomcat and maven classes
   require tomcat, maven::maven
 
