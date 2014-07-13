@@ -75,8 +75,19 @@ define java_web_application_server::instance (
     instance_basedir => $instance_basedir,
   }
 
+  # Since the tomcat_libraries use Maven coordinates we need enhance the
+  # facade with default values
+  $tomcat_libraries_default = {
+    instance_basedir => $instance_basedir,
+    application_root => $application_root,
+    ensure           => $ensure,
+  }
+
   # Add the tomcat libraries
-  create_resources('::java_web_application_server::maven', $tomcat_libraries)
+  create_resources(
+    '::java_web_application_server::maven',
+    $tomcat_libraries,
+    $tomcat_libraries_default)
 
   # The application install directory is based off of the Tomcat instance
   # base directory
