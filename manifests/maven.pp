@@ -46,11 +46,11 @@ define java_web_application_server::maven (
 
   # Normalize the Maven directory
   $maven_location =
-    "${instance_basedir}/${application_root}/lib/${artifact_id}-${version}.jar"
+    "${instance_basedir}/${application_root}/lib/${artifactid}-${version}.jar"
 
   maven {$maven_location:
-    groupid    => $group_id,
-    artifactid => $artifact_id,
+    groupid    => $groupid,
+    artifactid => $artifactid,
     version    => $version,
     repos      => $repos,
   }
