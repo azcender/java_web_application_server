@@ -24,6 +24,7 @@ define java_web_application_server::maven (
   $repos,
   $version,
   $application_root,
+  $packaging        = 'jar',
   $instance_basedir = '/srv/tomcat',
   $ensure           = 'present') {
 
