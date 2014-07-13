@@ -19,8 +19,8 @@
 #   maestrodev/maven
 #
 define java_web_application_server::maven (
-  $group_id,
-  $artifact_id,
+  $groupid,
+  $artifactid,
   $repos,
   $version,
   $application_root,
