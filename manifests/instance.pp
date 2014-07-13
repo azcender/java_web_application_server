@@ -75,6 +75,12 @@ define java_web_application_server::instance (
     instance_basedir => $instance_basedir,
   }
 
+  # Normalize the tomcat libraries so they go in the correct location.
+  # The name must be changed.
+  $tomcat_libraries.each |$key, $value| {
+    notice ("Key \$key and value \$value")
+  }
+
   # Add the tomcat libraries
   create_resources('maven', $tomcat_libraries)
 
