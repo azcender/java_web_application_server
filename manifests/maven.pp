@@ -18,14 +18,14 @@
 # Requires:
 #   maestrodev/maven
 #
-define java_web_application_server::instance (
+define java_web_application_server::maven (
   $group_id,
   $artifact_id,
   $repos,
   $version,
   $application_root,
   $instance_basedir = '/srv/tomcat',
-  $ensure) {
+  $ensure           = 'present') {
 
   # Application root cannot have apaces
   validate_re($application_root, '^[\S]+$')
@@ -33,7 +33,6 @@ define java_web_application_server::instance (
   # Validate Maven coordinates and other strings
   validate_string($group_id)
   validate_string($artifact_id)
-  validate_string($repository)
   validate_string($version)
   validate_string($instance_basedir)
 
@@ -45,10 +44,11 @@ define java_web_application_server::instance (
     ])
 
   # Normalize the Maven directory
-  $maven_location = "${instance_basedir}/${application_root}/lib/${artifact_id}-${version}.jar"
+  $maven_location =
+    "${instance_basedir}/${application_root}/lib/${artifact_id}-${version}.jar"
 
   maven {$maven_location:
-    groupid => $group_id,
+    groupid    => $group_id,
     artifactid => $artifact_id,
     version    => $version,
     repos      => $repos,
