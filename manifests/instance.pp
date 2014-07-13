@@ -76,7 +76,7 @@ define java_web_application_server::instance (
   }
 
   # Add the tomcat libraries
-  create_resources('maven', $tomcat_libraries)
+  create_resources('::java_web_application_server::maven', $tomcat_libraries)
 
   # The application install directory is based off of the Tomcat instance
   # base directory
