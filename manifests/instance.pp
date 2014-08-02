@@ -3,18 +3,24 @@
 # This class installs a java web application onto a tomcat instance
 #
 # Parameters:
-#   group_id         - Maven group ID coordinate
-#   artifact_id      - Maven artifact ID coordinate
-#   repository       - Maven repository where this application is kept
-#   version          - Version of the application retrieved from Maven repo
-#   http_port        - HTTP port this application can be found on
-#   ajp_port         - If AJP is used the web front end can integrate here
-#   server_port      - The server control port for Tomcat
-#   ensure           - present, running, installed, stopped or absent
-#   instance_basedir - The directory the tomcat instance will be installed in
-#   application_root - URI the application will be under: 'http://../myapp'
-#   tomcat_libraries - A hash of libraries that should be added to the tomcat
-#                      instance
+#   (string) application
+#              - The application this instance should host
+#   (hash)   available_applications
+#              - The applications available to host
+#   (int)    http_port
+#              - HTTP port this application can be found on
+#   (int)    ajp_port
+#               - If AJP is used the web front end can integrate here
+#   (int)    server_port
+#               - The server control port for Tomcat
+#   (enum)   ensure
+#               - present, running, installed, stopped or absent
+#   (string) instance_basedir
+#               - The directory the tomcat instance will be installed
+#   (string) application_root
+#               - URI the application will be under: 'http://../myapp'
+#   (hash)   tomcat_libraries
+#               - A hash of libraries that should be added to the tomcat instance
 #
 # Actions:
 #   Install tomcat instance
@@ -26,17 +32,15 @@
 #   maestrodev/maven
 #
 define java_web_application_server::instance (
-  $tomcat_libraries = '',
-  $group_id         = '',
-  $artifact_id      = '',
-  $repository       = '',
-  $version          = '',
-  $http_port        = '8080',
-  $ajp_port         = '8009',
-  $server_port      = '8005',
-  $ensure           = present,
-  $instance_basedir = '/srv/tomcat',
-  $application_root = '') {
+  $tomcat_libraries       = '',
+  $application            = '',
+  $available_applications = '',
+  $http_port              = '8080',
+  $ajp_port               = '8009',
+  $server_port            = '8005',
+  $ensure                 = present,
+  $instance_basedir       = '/srv/tomcat',
+  $application_root       = '') {
 
   # This currently requires tomcat and maven classes
   require tomcat, maven::maven
@@ -66,6 +70,31 @@ define java_web_application_server::instance (
     'installed',
     'absent'
     ])
+
+  # Build a server.xml with resource context
+#  ::concat {'/tmp/x_server.xml':
+#    mode  => '0644',
+#    owner => vagrant,
+#    group => vagrant,
+#  }
+#
+#  ::concat::fragment {'server.xml_header':
+#    target  => '/tmp/x_server.xml',
+#    content => template('java_web_application_server/server_header.xml.erb'),
+#    order   => 01,
+#  }
+#
+#  ::concat::fragment {'server.xml_resources':
+#    target  => '/tmp/x_server.xml',
+#    content => template('java_web_application_server/server_context.xml.erb'),
+#    order   => 90,
+#  }
+#
+#  ::concat::fragment {'server.xml_footer':
+#    target  => '/tmp/x_server.xml',
+#    content => template('java_web_application_server/server_footer.xml.erb'),
+#    order   => 99,
+#  }
 
   ::tomcat::instance { $application_root:
     ensure           => $ensure,
@@ -98,10 +127,10 @@ define java_web_application_server::instance (
   # property. Need to address
   if $ensure != 'absent' {
     maven { $maven_application_directory:
-      groupid    => $group_id,
-      artifactid => $artifact_id,
-      version    => $version,
-      repos      => $repository,
+      groupid    => "$available_applications[$application]['group_id']",
+      artifactid => "$available_applications[$application]['artifact_id']",
+      version    => "$available_applications[$application]['version']",
+      repos      => "$available_applications[$application]['repository']",
       packaging  => 'war',
     }
   }
