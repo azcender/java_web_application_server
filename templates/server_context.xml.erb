@@ -1,0 +1,12 @@
+<% @resources.each do |resource| -%>
+          <Resource name="<%= resource['name'] %>"
+                    auth="<%= resource['auth'] %>"
+                    type="<%= resource['type'] %>"
+                    username="<%= resource['username'] %>"
+                    password="<%= resource['password'] %>"
+                    driverClassName="<%= resource['driverClassName'] %>"
+                    url="<%= resource['url'] %>"
+                    maxActive="<%= resource['maxActive'] %>"
+                    maxIdle="<%= resource['maxIdle'] %>"
+                    maxWait="<%= resource['maxWait'] %>" />
+<% end -%>
