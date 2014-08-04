@@ -39,7 +39,9 @@ define java_web_application_server::instance (
   $instance_basedir       = '/srv/tomcat',
   $application_root       = '') {
 
-  notice("Look at me")
+  file { '/tmp/avail_app':
+    content =>  'I am here',
+  }
 
   # This currently requires tomcat and maven classes
   require tomcat, maven::maven
