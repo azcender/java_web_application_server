@@ -4,13 +4,26 @@
 # for a tomcat instance
 #
 # Parameters:
-#   group_id         - Maven group ID coordinate
-#   artifact_id      - Maven artifact ID coordinate
-#   repos            - Maven repository where this application is kept
-#   version          - Version of the application retrieved from Maven repo
-#   ensure           - present, running, installed, stopped or absent
-#   instance_basedir - The directory the tomcat instance will be installed in
-#   application_root - URI the application will be under: 'http://../myapp'
+#   name             (String)
+#     - THe tomcat library key
+#
+#   tomcat_libraries (hash)
+#     - The libraries that should be installed on the Tomcat tomcat instance
+#
+#     groupid    - Maven group id coordinate
+#     artifactid - Maven artifact id coordinate
+#     version    - Maven version coordinate
+#     repos      - Arrar of Maven repositories to search
+#     packaging  - jar, war, ear
+#
+#   ensure           (enum)
+#     - present, running, installed, stopped or absent
+#
+#   instance_basedir (String)
+#     - The directory the tomcat instance will be installed in
+#
+#   application_root (String)
+#     - URI the application will be under: 'http://../myapp'
 #
 # Actions:
 #   Install java library in tomcat instance
@@ -19,22 +32,34 @@
 #   maestrodev/maven
 #
 define java_web_application_server::maven (
-  $groupid,
-  $artifactid,
-  $repos,
-  $version,
+  $name,
+  $tomcat_libraries,
   $application_root,
-  $packaging        = 'jar',
   $instance_basedir = '/srv/tomcat',
   $ensure           = 'present') {
+
+  # tomcat_libraries must be a hash
+  validate_hash($tomcat_libraries)
 
   # Application root cannot have apaces
   validate_re($application_root, '^[\S]+$')
 
   # Validate Maven coordinates and other strings
-  validate_string($group_id)
-  validate_string($artifact_id)
-  validate_string($version)
+  validate_string($tomcat_libraries[$name]['groupid'])
+  validate_string($tomcat_libraries[$name]['artifactid'])
+  validate_string($tomcat_libraries[$name]['version'])
+  validate_string($tomcat_libraries[$name]['packaging'])
+
+  # Validate repos are an array
+  validate_array($tomcat_libraries[$name]['repos'])
+
+  # Create local vars from hash
+  $groupid    = $tomcat_libraries[$name]['groupid']
+  $artifactid = $tomcat_libraries[$name]['artifactid']
+  $version    = $tomcat_libraries[$name]['version']
+  $packaging  = $tomcat_libraries[$name]['packaging']
+  $repos      = $tomcat_libraries[$name]['repos']
+
   validate_string($instance_basedir)
 
   # Check ensure types
@@ -46,7 +71,7 @@ define java_web_application_server::maven (
 
   # Normalize the Maven directory
   $maven_location =
-    "${instance_basedir}/${application_root}/lib/${artifactid}-${version}.jar"
+    "${instance_basedir}/${application_root}/lib/${artifactid}-${version}.${packaging}"
 
   maven {$maven_location:
     groupid    => $groupid,

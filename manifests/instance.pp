@@ -112,11 +112,22 @@ define java_web_application_server::instance (
     ensure           => $ensure,
   }
 
+  # The keys for the Tomcat libraries
+  $tomcat_libraries_keys = keys($tomcat_libraries)
+
+  # Iterate the tomcat libraries and install in the Tomcat instance
+  ::java_web_application_server::maven { $tomcat_libraries_keys:
+    tomcat_libraries => $tomcat_libraries,
+    instance_basedir => $instance_basedir,
+    application_root => $application_root,
+    ensure           => $ensure,
+  }
+
   # Add the tomcat libraries
-  create_resources(
-    '::java_web_application_server::maven',
-    $tomcat_libraries,
-    $tomcat_libraries_default)
+#  create_resources(
+#    '::java_web_application_server::maven',
+#    $tomcat_libraries,
+#    $tomcat_libraries_default)
 
   # The application install directory is based off of the Tomcat instance
   # base directory
