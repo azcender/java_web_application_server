@@ -68,6 +68,9 @@ define java_web_application_server::instance (
     'absent'
     ])
 
+  # Pretend resources
+  $resources = []
+
   # Build a server.xml with resource context
   ::concat {'/tmp/x_server.xml':
     mode  => '0644',
