@@ -392,7 +392,12 @@ define java_web_application_server::instance (
     "${instance_basedir}/${application_root}/webapps/${application_root}.war"
 
   # Notify the available applictaions
-  notify { "$available_applications": }
+  notify { "$available_applications[$application]['group_id']": }
+  notify { "$available_applications[$application]['artifact_id']": }
+  notify { "$available_applications[$application]['version']": }
+  notify ( "$available_applications[$application]['repos']": }
+
+
 
   # Currently using an if statement since maven does not have an ensure
   # property. Need to address
