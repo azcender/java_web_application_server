@@ -32,7 +32,6 @@
 #   maestrodev/maven
 #
 define java_web_application_server::instance (
-  $tomcat_libraries       = '',
   $application            = '',
   $available_applications = '',
   $http_port              = '8080',
