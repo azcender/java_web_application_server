@@ -39,7 +39,7 @@ define java_web_application_server::instance (
   $instance_basedir       = '/srv/tomcat',
   $application_root       = '') {
 
-  file { "/tmp/avail_app-${applicaton_root}"':
+  file { "/tmp/avail_app-${application_root}" :
     content =>  'I am here',
   }
 
