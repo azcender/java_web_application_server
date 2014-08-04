@@ -44,7 +44,10 @@ define java_web_application_server::instance (
 
   include ::java_web_application_server::params
 
-  # Do validation of ports
+  # Validate application list is a hash
+  validate_hash($available_applications)
+
+  # Do validation of ports and application
   validate_re($server_port, '^[0-9]+$')
   validate_re($http_port, '^[0-9]+$')
   validate_re($ajp_port, '^[0-9]+$')
@@ -53,11 +56,8 @@ define java_web_application_server::instance (
   validate_re($application_root, '^[\S]+$')
 
   # Validate Maven coordinates and other strings
-  validate_string($group_id)
-  validate_string($artifact_id)
-  validate_string($repository)
-  validate_string($version)
   validate_string($instance_basedir)
+  validate_string($application)
 
   # Check ensure types
   validate_re($ensure, [
@@ -392,21 +392,16 @@ define java_web_application_server::instance (
     "${instance_basedir}/${application_root}/webapps/${application_root}.war"
 
   # Notify the available applictaions
-  notify { "$available_applications[$application]['group_id']": }
-  notify { "$available_applications[$application]['artifact_id']": }
-  notify { "$available_applications[$application]['version']": }
-  notify { "$available_applications[$application]['repos']": }
-
-
+  notify { "$available_applications[$application][group_id]": }
 
   # Currently using an if statement since maven does not have an ensure
   # property. Need to address
   if $ensure != 'absent' {
     maven { $maven_application_directory:
-      groupid    => "$available_applications[$application]['group_id']",
-      artifactid => "$available_applications[$application]['artifact_id']",
-      version    => "$available_applications[$application]['version']",
-      repos      => "$available_applications[$application]['repository']",
+      groupid    => "$available_applications[$application][group_id]",
+      artifactid => "$available_applications[$application][artifact_id]",
+      version    => "$available_applications[$application][version]",
+      repos      => "$available_applications[$application][repository]",
       packaging  => 'war',
     }
   }
