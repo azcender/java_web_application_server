@@ -69,7 +69,7 @@ define java_web_application_server::instance (
     ])
 
   # Pretend resources
-  $resources = []
+  $resources = ${available_applications[$application][resources]}
 
   # Build a server.xml with resource context
   ::concat {'/tmp/x_server.xml':
