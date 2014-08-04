@@ -41,9 +41,10 @@ define java_web_application_server::instance (
 
   $var1 = $available_applications[$application]
   $var2 = $available_applications[$application]['group_id']
+  $var3 = $available_applications[$application][group_id]
 
   file { "/tmp/avail_app-${application_root}" :
-    content =>  "Available apps ${available_applications}\nApplication ${available_applications}[${application}]\nGroup id ${available_applications}[${application}][group_id]\nVAR1 = ${var1}\nVAR2 = ${var2}",
+    content =>  "Available apps ${available_applications}\nApplication ${available_applications[$application]}\nGroup id ${available_applications[$application][group_id]}\nVAR1 = ${var1}\nVAR2 = ${var2}\nVAR3 = ${var3}",
   }
 
   # This currently requires tomcat and maven classes
