@@ -104,30 +104,290 @@ define java_web_application_server::instance (
     instance_basedir => $instance_basedir,
   }
 
-  # Since the tomcat_libraries use Maven coordinates we need enhance the
-  # facade with default values
-  $tomcat_libraries_default = {
-    instance_basedir => $instance_basedir,
-    application_root => $application_root,
-    ensure           => $ensure,
+  # Install the ADF libraries. This method is clunky and should probably be
+  # done through Hiera. Unfortunantly Puppet does not provide any elgant
+  # iterative solutions for production use. For the moment these libraries
+  # are hard coded.
+
+  maven { "${instance_basedir}/${application_root}/lib/xdb.jar":
+      groupid    => 'com.oracle.external',
+      artifactid => 'xdb',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
   }
 
-  # The keys for the Tomcat libraries
-  $tomcat_libraries_keys = keys($tomcat_libraries)
-
-  # Iterate the tomcat libraries and install in the Tomcat instance
-  ::java_web_application_server::maven { "$application_root-$tomcat_libraries_keys":
-    tomcat_libraries => $tomcat_libraries,
-    instance_basedir => $instance_basedir,
-    application_root => $application_root,
-    ensure           => $ensure,
+  maven { "${instance_basedir}/${application_root}/lib/oc4j-ws-support-impl.jar":
+      groupid    => 'com.oracle.webservices.fmw',
+      artifactid => 'oc4j-ws-support-impl',
+      version    => '1.0.0-SNAPSHOT',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
   }
 
-  # Add the tomcat libraries
-#  create_resources(
-#    '::java_web_application_server::maven',
-#    $tomcat_libraries,
-#    $tomcat_libraries_default)
+  maven { "${instance_basedir}/${application_root}/lib/classloader.jar":
+      groupid    => 'com.oracle',
+      artifactid => 'classloader',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/http_client.jar":
+      groupid    => 'com.oracle',
+      artifactid => 'http_client',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/logging-utils.jar":
+      groupid    => 'com.oracle',
+      artifactid => 'logging-utils',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/web-common.jar":
+      groupid    => 'com.oracle',
+      artifactid => 'web-common',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/web-common-schemas.jar":
+      groupid    => 'com.oracle',
+      artifactid => 'web-common-schemas',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/bcel.jar":
+      groupid    => 'org.apache',
+      artifactid => 'bcel',
+      version    => '5.1',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/beanutils.jar":
+      groupid    => 'org.apache.commons',
+      artifactid => 'beanutils',
+      version    => '1.8.3',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/logging.jar":
+      groupid    => 'org.apache.commons',
+      artifactid => 'logging',
+      version    => '1.1.1',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/adf-controller-security.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'adf-controller-security',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/adf-share-security.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'adf-share-security',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/adf-share-support.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'adf-share-support',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/adflogginghandler.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'adflogginghandler',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/adfsharembean.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'adfsharembean',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/commons-el.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'commons-el',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/jsp-el-api.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'jsp-el-api',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/oracle-el.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'oracle-el',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/adf-share-base.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'adf-share-base',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/adf-share-ca.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'adf-share-ca',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/share.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'share',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/dms.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'dms',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/javamodel-rt.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'javamodel-rt',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/javatools-nodeps.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'javatools-nodeps',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/oicons.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'oicons',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/resourcebundle.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'resourcebundle',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/ojdbc6dms.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'ojdbc6dms',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/jrf-api.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'jrf-api',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/globaltldcache.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'globaltldcache',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/mdsrt.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'mdsrt',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/orai18n-mapping.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'orai18n-mapping',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/ojdl.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'ojdl',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/ojdl2.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'ojdl2',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/xmlparserv2_sans_jaxp_services.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'xmlparserv2_sans_jaxp_services',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
+
+  maven { "${instance_basedir}/${application_root}/lib/xmlef.jar":
+      groupid    => 'com.oracle.adf',
+      artifactid => 'xmlef',
+      version    => '12.1.2-0-0',
+      repos      => ['http://artifactory.azcender.com/artifactory/oracle-libs-release'],
+      packaging  => 'jar',
+  }
 
   # The application install directory is based off of the Tomcat instance
   # base directory
