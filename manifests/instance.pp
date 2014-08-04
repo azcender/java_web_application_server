@@ -392,9 +392,9 @@ define java_web_application_server::instance (
     "${instance_basedir}/${application_root}/webapps/${application_root}.war"
 
   # Notify the available applictaions
-  notify {"Available apps ${instance_basedir}-${available_applications}": }
-  notify {"Application ${instance_basedir}-${available_applications}[${application}]": }
-  notify {"Group id ${instance_basedir}-${available_applications}[${application}][group_id]": }
+  notice ("Available apps ${instance_basedir}-${available_applications}")
+  notice ("Application ${instance_basedir}-${available_applications}[${application}]")
+  notice ("Group id ${instance_basedir}-${available_applications}[${application}][group_id]")
 
   # Currently using an if statement since maven does not have an ensure
   # property. Need to address
