@@ -19,8 +19,6 @@
 #               - The directory the tomcat instance will be installed
 #   (string) application_root
 #               - URI the application will be under: 'http://../myapp'
-#   (hash)   tomcat_libraries
-#               - A hash of libraries that should be added to the tomcat instance
 #
 # Actions:
 #   Install tomcat instance
@@ -392,6 +390,9 @@ define java_web_application_server::instance (
   # base directory
   $maven_application_directory  =
     "${instance_basedir}/${application_root}/webapps/${application_root}.war"
+
+  # Notify the available applictaions
+  notify { "$available_applications": }
 
   # Currently using an if statement since maven does not have an ensure
   # property. Need to address
