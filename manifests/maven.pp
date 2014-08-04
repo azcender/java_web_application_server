@@ -5,7 +5,7 @@
 #
 # Parameters:
 #   name             (String)
-#     - THe tomcat library key
+#     - The application root concat with the tomcat library key
 #
 #   tomcat_libraries (hash)
 #     - The libraries that should be installed on the Tomcat tomcat instance
@@ -38,6 +38,9 @@ define java_web_application_server::maven (
   $instance_basedir = '/srv/tomcat',
   $ensure           = 'present') {
 
+  # Get the hash key
+  $key = split($name, '_')
+
   # tomcat_libraries must be a hash
   validate_hash($tomcat_libraries)
 
@@ -45,20 +48,21 @@ define java_web_application_server::maven (
   validate_re($application_root, '^[\S]+$')
 
   # Validate Maven coordinates and other strings
-  validate_string($tomcat_libraries[$name]['groupid'])
-  validate_string($tomcat_libraries[$name]['artifactid'])
-  validate_string($tomcat_libraries[$name]['version'])
-  validate_string($tomcat_libraries[$name]['packaging'])
+  validate_string($tomcat_libraries[$key[1]]['groupid'])
+
+  validate_string($tomcat_libraries[$key[1]]['artifactid'])
+  validate_string($tomcat_libraries[$key[1]]['version'])
+  validate_string($tomcat_libraries[$key[1]]['packaging'])
 
   # Validate repos are an array
-  validate_array($tomcat_libraries[$name]['repos'])
+  validate_array($tomcat_libraries[$key[1]]['repos'])
 
   # Create local vars from hash
-  $groupid    = $tomcat_libraries[$name]['groupid']
-  $artifactid = $tomcat_libraries[$name]['artifactid']
-  $version    = $tomcat_libraries[$name]['version']
-  $packaging  = $tomcat_libraries[$name]['packaging']
-  $repos      = $tomcat_libraries[$name]['repos']
+  $groupid    = $tomcat_libraries[$key[1]]['groupid']
+  $artifactid = $tomcat_libraries[$key[1]]['artifactid']
+  $version    = $tomcat_libraries[$key[1]]['version']
+  $packaging  = $tomcat_libraries[$key[1]]['packaging']
+  $repos      = $tomcat_libraries[$key[1]]['repos']
 
   validate_string($instance_basedir)
 

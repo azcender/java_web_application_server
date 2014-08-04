@@ -116,7 +116,7 @@ define java_web_application_server::instance (
   $tomcat_libraries_keys = keys($tomcat_libraries)
 
   # Iterate the tomcat libraries and install in the Tomcat instance
-  ::java_web_application_server::maven { $tomcat_libraries_keys:
+  ::java_web_application_server::maven { "$application_root-$tomcat_libraries_keys":
     tomcat_libraries => $tomcat_libraries,
     instance_basedir => $instance_basedir,
     application_root => $application_root,
