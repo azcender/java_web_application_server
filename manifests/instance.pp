@@ -398,13 +398,13 @@ define java_web_application_server::instance (
 
   # Currently using an if statement since maven does not have an ensure
   # property. Need to address
-  if $ensure != 'absent' {
-    maven { $maven_application_directory:
-      groupid    => "${available_applications}[${application}][group_id]",
-      artifactid => "${available_applications}[${application}][artifact_id]",
-      version    => "${available_applications}[${application}][version]",
-      repos      => "${available_applications}[${application}][repository]",
-      packaging  => 'war',
-    }
-  }
+#  if $ensure != 'absent' {
+#    maven { $maven_application_directory:
+#      groupid    => "${available_applications}[${application}][group_id]",
+#      artifactid => "${available_applications}[${application}][artifact_id]",
+#      version    => "${available_applications}[${application}][version]",
+#      repos      => "${available_applications}[${application}][repository]",
+#      packaging  => 'war',
+#    }
+#  }
 }
