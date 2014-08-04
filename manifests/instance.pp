@@ -39,14 +39,6 @@ define java_web_application_server::instance (
   $instance_basedir       = '/srv/tomcat',
   $application_root       = '') {
 
-  $var1 = $available_applications[$application]
-  $var2 = $available_applications[$application]['group_id']
-  $var3 = $available_applications[$application][group_id]
-
-  file { "/tmp/avail_app-${application_root}" :
-    content =>  "Available apps ${available_applications}\nApplication ${available_applications[$application]}\nGroup id ${available_applications[$application][group_id]}\nVAR1 = ${var1}\nVAR2 = ${var2}\nVAR3 = ${var3}",
-  }
-
   # This currently requires tomcat and maven classes
   require tomcat, maven::maven
 
@@ -399,20 +391,15 @@ define java_web_application_server::instance (
   $maven_application_directory  =
     "${instance_basedir}/${application_root}/webapps/${application_root}.war"
 
-  # Notify the available applictaions
-#  notice ("Available apps ${instance_basedir}-${available_applications}")
-#  notice ("Application ${instance_basedir}-${available_applications}[${application}]")
-#  notice ("Group id ${instance_basedir}-${available_applications}[${application}][group_id]")
-
   # Currently using an if statement since maven does not have an ensure
   # property. Need to address
-#  if $ensure != 'absent' {
-#    maven { $maven_application_directory:
-#      groupid    => "${available_applications}[${application}][group_id]",
-#      artifactid => "${available_applications}[${application}][artifact_id]",
-#      version    => "${available_applications}[${application}][version]",
-#      repos      => "${available_applications}[${application}][repository]",
-#      packaging  => 'war',
-#    }
-#  }
+  if $ensure != 'absent' {
+    maven { $maven_application_directory:
+      groupid    => "${available_applications[$application][group_id]}",
+      artifactid => "${available_applications[$application][artifact_id]}",
+      version    => "${available_applications[$application][verion]}",
+      repos      => "${available_applications[$application][repos]}",
+      packaging  => 'war',
+    }
+  }
 }
