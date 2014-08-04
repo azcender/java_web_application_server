@@ -395,7 +395,7 @@ define java_web_application_server::instance (
   notify { "$available_applications[$application]['group_id']": }
   notify { "$available_applications[$application]['artifact_id']": }
   notify { "$available_applications[$application]['version']": }
-  notify ( "$available_applications[$application]['repos']": }
+  notify { "$available_applications[$application]['repos']": }
 
 
 
