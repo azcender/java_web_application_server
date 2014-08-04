@@ -39,8 +39,10 @@ define java_web_application_server::instance (
   $instance_basedir       = '/srv/tomcat',
   $application_root       = '') {
 
+  $var1 = $available_applications[$application][group_id]
+
   file { "/tmp/avail_app-${application_root}" :
-    content =>  "Available apps ${instance_basedir}-${available_applications}\nApplication ${instance_basedir}-${available_applications}[${application}]\nGroup id ${instance_basedir}-${available_applications}[${application}][group_id]",
+    content =>  "Available apps ${available_applications}\nApplication ${available_applications}[${application}]\nGroup id ${available_applications}[${application}][group_id]\n$var1",
   }
 
   # This currently requires tomcat and maven classes
