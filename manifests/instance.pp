@@ -47,7 +47,7 @@ define java_web_application_server::instance (
 
   include ::java_web_application_server::params
 
-  notice($available_resources)
+  notify {"$available_resources)": }
 
   # Validate application list is a hash
   validate_hash($available_applications)
