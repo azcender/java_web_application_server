@@ -47,8 +47,11 @@ define java_web_application_server::instance (
 
   include ::java_web_application_server::params
 
+  notice($available_resources)
+
   # Validate application list is a hash
   validate_hash($available_applications)
+  validate_hash($available_resources)
 
   # Check hash values
   validate_string("${available_applications[$application][group_id]}")
