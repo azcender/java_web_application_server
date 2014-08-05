@@ -55,8 +55,7 @@ define java_web_application_server::instance (
   # The following line doesn't work properly. Sees an array of size one as a
   # string
   # validate_array("${available_applications[$application][repos]}")
-
-  validate_hash("${available_applications[$application][resources]}")
+  # validate_hash("${available_applications[$application][resources]}")
 
   # Do validation of ports and application
   validate_re($server_port, '^[0-9]+$')
