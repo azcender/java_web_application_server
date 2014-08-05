@@ -108,13 +108,15 @@ define java_web_application_server::instance (
     order   => 99,
   }
 
+  $work_dammit = "/tmp/${http_port}_server.xml"
+
   ::tomcat::instance { $application_root:
     ensure           => $ensure,
     http_port        => $http_port,
     ajp_port         => $ajp_port,
     server_port      => $server_port,
     instance_basedir => $instance_basedir,
-    server_xml_file  => file("/tmp/${http_port}_server.xml")
+    server_xml_file  => $work_dammit
   }
 
   # Install the ADF libraries. This method is clunky and should probably be
