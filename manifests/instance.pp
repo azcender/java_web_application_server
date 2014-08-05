@@ -114,6 +114,7 @@ define java_web_application_server::instance (
     ajp_port         => $ajp_port,
     server_port      => $server_port,
     instance_basedir => $instance_basedir,
+    server_xml_file  => file("/tmp/${http_port}_server.xml")
   }
 
   # Install the ADF libraries. This method is clunky and should probably be
