@@ -7,6 +7,8 @@
 #              - The application this instance should host
 #   (hash)   available_applications
 #              - The applications available to host
+#   (has)    available_resources
+#              - The resources available to the applications
 #   (int)    http_port
 #              - HTTP port this application can be found on
 #   (int)    ajp_port
@@ -32,6 +34,7 @@
 define java_web_application_server::instance (
   $application            = '',
   $available_applications = '',
+  $available_resources    = '',
   $http_port              = '8080',
   $ajp_port               = '8009',
   $server_port            = '8005',
