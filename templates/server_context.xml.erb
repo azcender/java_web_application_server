@@ -1,3 +1,4 @@
+<% if @resources -%>
 <% @resources.each do |resource| -%>
           <Resource name="<%= resource['name'] %>"
                     auth="<%= resource['auth'] %>"
@@ -9,4 +10,5 @@
                     maxActive="<%= resource['maxActive'] %>"
                     maxIdle="<%= resource['maxIdle'] %>"
                     maxWait="<%= resource['maxWait'] %>" />
+<% end -%>
 <% end -%>
