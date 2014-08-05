@@ -82,26 +82,26 @@ define java_web_application_server::instance (
     ])
 
   # Build a server.xml with resource context
-  ::concat {"/tmp/${$application}_server.xml" :
+  ::concat {"/tmp/${http_port}_server.xml" :
     mode  => '0644',
     owner => vagrant,
     group => vagrant,
   }
 
   ::concat::fragment {'server.xml_header':
-    target  => "/tmp/${application}_server.xml",
+    target  => "/tmp/${http_port}_server.xml",
     content => template('java_web_application_server/server_header.xml.erb'),
     order   => 01,
   }
 
   ::concat::fragment {'server.xml_resources':
-    target  => "/tmp/${application}_server.xml",
+    target  => "/tmp/${http_port}_server.xml",
     content => template('java_web_application_server/server_context.xml.erb'),
     order   => 90,
   }
 
   ::concat::fragment {'server.xml_footer':
-    target  => "/tmp/${application}_server.xml",
+    target  => "/tmp/${http_port}_server.xml",
     content => template('java_web_application_server/server_footer.xml.erb'),
     order   => 99,
   }
