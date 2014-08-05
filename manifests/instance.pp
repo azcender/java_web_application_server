@@ -52,7 +52,9 @@ define java_web_application_server::instance (
   validate_string("${available_applications[$application][artifact_id]}")
   validate_string("${available_applications[$application][version]}")
 
-  validate_array("${available_applications[$application][repos]}")
+  # The following line doesn't work properly. Sees an array of size one as a
+  # string
+  # validate_array("${available_applications[$application][repos]}")
 
   validate_hash("${available_applications[$application][resources]}")
 
