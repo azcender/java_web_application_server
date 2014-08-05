@@ -60,7 +60,7 @@ define java_web_application_server::instance (
   # validate_array("${available_applications[$application][repos]}")
   # validate_hash("${available_applications[$application][resources]}")
 
-  $resources = ${available_applications[$application][resources]}
+  $resources = $available_applications[$application][resources]
 
   # Do validation of ports and application
   validate_re($server_port, '^[0-9]+$')
