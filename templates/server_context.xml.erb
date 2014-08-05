@@ -1,6 +1,6 @@
 <% if @resources -%>
 <% @resources.each do |resource| -%>
-          <Resource name="<%= resource['name'] %>"
+          <Resource name="<%= resource['connection_name'] %>"
                     auth="<%= resource['auth'] %>"
                     type="<%= resource['type'] %>"
                     username="<%= resource['username'] %>"
