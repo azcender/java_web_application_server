@@ -83,39 +83,14 @@ define java_web_application_server::instance (
     'absent'
     ])
 
-  # Build a server.xml with resource context
-  ::concat {"/tmp/${http_port}_server.xml" :
-    mode  => '0644',
-    owner => vagrant,
-    group => vagrant,
-  }
-
-  ::concat::fragment {"${http_port}_server.xml_header":
-    target  => "/tmp/${http_port}_server.xml",
-    content => template('java_web_application_server/server_header.xml.erb'),
-    order   => 01,
-  }
-
-  ::concat::fragment {"${http_port}_server.xml_resources":
-    target  => "/tmp/${http_port}_server.xml",
-    content => template('java_web_application_server/server_context.xml.erb'),
-    order   => 90,
-  }
-
-  ::concat::fragment {"${http_port}_server.xml_footer":
-    target  => "/tmp/${http_port}_server.xml",
-    content => template('java_web_application_server/server_footer.xml.erb'),
-    order   => 99,
-  }
-
-  $work_dammit = "/tmp/${http_port}_server.xml"
-
   ::tomcat::instance { $application_root:
-    ensure           => $ensure,
-    http_port        => $http_port,
-    ajp_port         => $ajp_port,
-    server_port      => $server_port,
-    instance_basedir => $instance_basedir,
+    ensure              => $ensure,
+    http_port           => $http_port,
+    ajp_port            => $ajp_port,
+    server_port         => $server_port,
+    instance_basedir    => $instance_basedir,
+    available_resources => $available_resources,
+    resources           => $resources,
   }
 
   # Install the ADF libraries. This method is clunky and should probably be
