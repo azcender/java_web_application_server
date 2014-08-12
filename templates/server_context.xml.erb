@@ -1,0 +1,14 @@
+<% if @resources -%>
+<% @resources.each do |resource| -%>
+          <Resource name="<%= @available_resources[resource]['connection_name'] %>"
+                    auth="<%= @available_resources[resource]['auth'] %>"
+                    type="<%= @available_resources[resource]['type'] %>"
+                    username="<%= @available_resources[resource]['username'] %>"
+                    password="<%= @available_resources[resource]['password'] %>"
+                    driverClassName="<%= @available_resources[resource]['driverClassName'] %>"
+                    url="<%= @available_resources[resource]['url'] %>"
+                    maxActive="<%= @available_resources[resource]['maxActive'] %>"
+                    maxIdle="<%= @available_resources[resource]['maxIdle'] %>"
+                    maxWait="<%= @available_resources[resource]['maxWait'] %>" />
+<% end -%>
+<% end -%>
