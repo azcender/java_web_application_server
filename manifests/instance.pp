@@ -188,9 +188,9 @@ define java_web_application_server::instance (
   }
 
   maven { "${instance_basedir}/${application_root}/lib/adf-share-security.jar":
-      groupid    => 'com.oracle.adf',
+      groupid    => 'adf-share-security',
       artifactid => 'adf-share-security',
-      version    => '12.1.2-0-0',
+      version    => 'adf-share-security',
       repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
       packaging  => 'jar',
   }
