@@ -110,8 +110,8 @@ define java_web_application_server::instance (
   maven { "${instance_basedir}/${application_root}/lib/oc4j-ws-support-impl.jar":
       groupid    => 'com.oracle.webservices.fmw',
       artifactid => 'oc4j-ws-support-impl',
-      version    => '1.0.0-SNAPSHOT',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      version    => '1.0.0-20140717.025643-2',
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -367,7 +367,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'xmlparserv2_sans_jaxp_services',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -375,7 +375,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'xmlef',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
