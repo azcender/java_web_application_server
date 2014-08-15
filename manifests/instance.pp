@@ -159,7 +159,7 @@ define java_web_application_server::instance (
       groupid    => 'org.apache',
       artifactid => 'bcel',
       version    => '5.1',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -167,7 +167,7 @@ define java_web_application_server::instance (
       groupid    => 'org.apache.commons',
       artifactid => 'beanutils',
       version    => '1.8.3',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -175,7 +175,7 @@ define java_web_application_server::instance (
       groupid    => 'org.apache.commons',
       artifactid => 'logging',
       version    => '1.1.1',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -199,7 +199,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'adf-share-support',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -207,7 +207,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'adflogginghandler',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -215,7 +215,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'adfsharembean',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -223,7 +223,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'commons-el',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -231,7 +231,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'jsp-el-api',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -239,7 +239,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'oracle-el',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -247,7 +247,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'adf-share-base',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -255,7 +255,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'adf-share-ca',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -263,7 +263,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'share',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -271,7 +271,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'dms',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -279,7 +279,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'javamodel-rt',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -287,7 +287,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'javatools-nodeps',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -295,7 +295,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'oicons',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -303,7 +303,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'resourcebundle',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -311,7 +311,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'ojdbc6dms',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -319,7 +319,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'jrf-api',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -327,7 +327,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'globaltldcache',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -335,7 +335,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'mdsrt',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -343,7 +343,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'orai18n-mapping',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -351,7 +351,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'ojdl',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
@@ -359,7 +359,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.adf',
       artifactid => 'ojdl2',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev'],
       packaging  => 'jar',
   }
 
