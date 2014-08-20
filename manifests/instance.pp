@@ -31,6 +31,7 @@
 #   camptocamp/tomcat
 #   maestrodev/maven
 #
+
 define java_web_application_server::instance (
   $application            = '',
   $available_applications = '',
