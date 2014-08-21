@@ -114,7 +114,7 @@ define java_web_application_server::instance (
   maven { "${instance_basedir}/${application_root}/lib/oc4j-ws-support-impl.jar":
       groupid    => 'com.oracle.webservices.fmw',
       artifactid => 'oc4j-ws-support-impl',
-      version    => '1.0.0-20140717.025643-2',
+      version    => '1.0.0-SNAPSHOT',
       repos      => $repos,
       packaging  => 'jar',
   }
