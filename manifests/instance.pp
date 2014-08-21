@@ -107,7 +107,7 @@ define java_web_application_server::instance (
       groupid    => 'com.oracle.external',
       artifactid => 'xdb',
       version    => '12.1.2-0-0',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/oracle-dev/'],
+      repos      => $repos,
       packaging  => 'jar',
   }
 
