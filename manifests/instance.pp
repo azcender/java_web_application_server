@@ -187,7 +187,7 @@ define java_web_application_server::instance (
       groupid    => 'adf-controller-security',
       artifactid => 'adf-controller-security',
       version    => 'adf-controller-security',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => $repos,
       packaging  => 'jar',
   }
 
@@ -195,7 +195,7 @@ define java_web_application_server::instance (
       groupid    => 'adf-share-security',
       artifactid => 'adf-share-security',
       version    => 'adf-share-security',
-      repos      => ['http://artifactory.phe.fs.fed.us:8081/artifactory/libs-release-local'],
+      repos      => $repos,
       packaging  => 'jar',
   }
 
