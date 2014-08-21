@@ -395,7 +395,7 @@ define java_web_application_server::instance (
       groupid    => "${available_applications[$application][group_id]}",
       artifactid => "${available_applications[$application][artifact_id]}",
       version    => "${available_applications[$application][version]}",
-      repos      => "${available_applications[$application][repos]}",
+      repos      => $repos,
       packaging  => 'war',
       ensure     => 'latest',
     }
