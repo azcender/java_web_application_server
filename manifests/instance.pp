@@ -186,7 +186,7 @@ define java_web_application_server::instance (
   maven { "${instance_basedir}/${application_root}/lib/adf-controller-security.jar":
       groupid    => 'adf-controller-security',
       artifactid => 'adf-controller-security',
-      version    => 'adf-controller-security',
+      version    => '12.1.2-0-0',
       repos      => $repos,
       packaging  => 'jar',
   }
@@ -194,7 +194,7 @@ define java_web_application_server::instance (
   maven { "${instance_basedir}/${application_root}/lib/adf-share-security.jar":
       groupid    => 'adf-share-security',
       artifactid => 'adf-share-security',
-      version    => 'adf-share-security',
+      version    => '12.1.2-0-0',
       repos      => $repos,
       packaging  => 'jar',
   }
