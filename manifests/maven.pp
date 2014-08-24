@@ -32,50 +32,31 @@
 #   maestrodev/maven
 #
 define java_web_application_server::maven (
-  $name,
-  $tomcat_libraries,
-  $application_root,
-  $instance_basedir = '/srv/tomcat',
-  $ensure           = 'present') {
-
-  # Get the hash key
-  $key = split($name, '_')
-
-  # tomcat_libraries must be a hash
-  validate_hash($tomcat_libraries)
-
-  # Application root cannot have apaces
-  validate_re($application_root, '^[\S]+$')
+  $groupid,
+  $artifactid,
+  $version,
+  $repos,
+  $packaging,
+  $library_directory = '/usr/share/tomcat6/lib',
+  $ensure            = 'present') {
 
   # Validate Maven coordinates and other strings
-  validate_string($tomcat_libraries[$key[1]]['groupid'])
+  validate_string($groupid)
+  validate_string($artifactid)
+  validate_string($version)
+  validate_string($library_directory)
 
-  validate_string($tomcat_libraries[$key[1]]['artifactid'])
-  validate_string($tomcat_libraries[$key[1]]['version'])
-  validate_string($tomcat_libraries[$key[1]]['packaging'])
-
-  # Validate repos are an array
-  validate_array($tomcat_libraries[$key[1]]['repos'])
-
-  # Create local vars from hash
-  $groupid    = $tomcat_libraries[$key[1]]['groupid']
-  $artifactid = $tomcat_libraries[$key[1]]['artifactid']
-  $version    = $tomcat_libraries[$key[1]]['version']
-  $packaging  = $tomcat_libraries[$key[1]]['packaging']
-  $repos      = $tomcat_libraries[$key[1]]['repos']
-
-  validate_string($instance_basedir)
-
-  # Check ensure types
-  validate_re($ensure, [
-    'present',
-    'installed',
-    'absent'
+  validate_re($packaging, [
+    'war',
+    'ear',
+    'jar'
     ])
 
-  # Normalize the Maven directory
+  # Repo array is requied and an array
+  validate_array($repos)
+
   $maven_location =
-    "${instance_basedir}/${application_root}/lib/${artifactid}-${version}.${packaging}"
+    "${library_directory}/${artifactid}-${version}.${packaging}"
 
   maven {$maven_location:
     groupid    => $groupid,
