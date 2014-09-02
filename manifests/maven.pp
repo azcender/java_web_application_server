@@ -40,6 +40,9 @@ define java_web_application_server::maven (
   $library_directory = '/usr/share/tomcat6/lib',
   $ensure            = 'present') {
 
+  # Ensure maven is here
+  require ::maven::maven
+
   # Validate Maven coordinates and other strings
   validate_string($groupid)
   validate_string($artifactid)
