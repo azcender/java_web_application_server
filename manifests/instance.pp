@@ -39,7 +39,6 @@ define java_web_application_server::instance (
   $server_port            = '8005',
   $ensure                 = present,
   $instance_basedir       = '/srv/tomcat',
-  $repos                  = '[]',
   $application_root       = '') {
 
   # This currently requires tomcat and maven classes
@@ -51,9 +50,6 @@ define java_web_application_server::instance (
   validate_hash($available_applications)
   validate_hash($available_resources)
 
-  # Validate repos list is an array
-  validate_array($repos)
-
   # Check hash values
   validate_string("${available_applications[$application][group_id]}")
   validate_string("${available_applications[$application][artifact_id]}")
@@ -61,7 +57,6 @@ define java_web_application_server::instance (
 
   # The following line doesn't work properly. Sees an array of size one as a
   # string
-  # validate_array("${available_applications[$application][repos]}")
   # validate_hash("${available_applications[$application][resources]}")
 
   $resources = $available_applications[$application][resources]
