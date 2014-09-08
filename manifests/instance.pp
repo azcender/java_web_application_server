@@ -28,8 +28,7 @@
 #   Restart tomcat service
 #
 # Requires:
-#   camptocamp/tomcat
-#   maestrodev/maven
+#   puppetlabs/tomcat
 #
 define java_web_application_server::instance (
   $application            = '',
@@ -44,7 +43,7 @@ define java_web_application_server::instance (
   $application_root       = '') {
 
   # This currently requires tomcat and maven classes
-  require tomcat, maven::maven
+  require ::tomcat
 
   include ::java_web_application_server::params
 
@@ -88,31 +87,35 @@ define java_web_application_server::instance (
     'absent'
     ])
 
+#  ::tomcat::instance { $application_root:
+#    ensure              => $ensure,
+#    http_port           => $http_port,
+#    ajp_port            => $ajp_port,
+#    server_port         => $server_port,
+#    instance_basedir    => $instance_basedir,
+#    available_resources => $available_resources,
+#    resources           => $resources,
+#  }
+
   ::tomcat::instance { $application_root:
-    ensure              => $ensure,
-    http_port           => $http_port,
-    ajp_port            => $ajp_port,
-    server_port         => $server_port,
-    instance_basedir    => $instance_basedir,
-    available_resources => $available_resources,
-    resources           => $resources,
-  }
-
-  # The application install directory is based off of the Tomcat instance
-  # base directory
-  $maven_application_directory  =
-    "${instance_basedir}/${application_root}/webapps/${application_root}.war"
-
-  # Currently using an if statement since maven does not have an ensure
-  # property. Need to address
-  if $ensure != 'absent' {
-    maven { $maven_application_directory:
-      groupid    => "${available_applications[$application][group_id]}",
-      artifactid => "${available_applications[$application][artifact_id]}",
-      version    => "${available_applications[$application][version]}",
-      repos      => $repos,
-      packaging  => 'war',
-      ensure     => 'latest',
-    }
+    catalina_base => $application_root,
+    source_url    => 'http://mirror.cogentco.com/pub/apache/tomcat/tomcat-7/v7.0.55/bin/apache-tomcat-7.0.55.tar.gz'
+  }->
+  tomcat::config::server { $application_root:
+    catalina_base => $application_root,
+    port          => $server_port,
+  }->
+  tomcat::config::server::connector { "${application_root}-http":
+    catalina_base         => $application_root,
+    port                  => $http_port,
+    protocol              => 'HTTP/1.1',
+  }->
+  tomcat::config::server::connector { "${application_root}-ajp":
+    catalina_base         => $application_root,
+    port                  => $ajp_port,
+    protocol              => 'AJP/1.3',
+  }->
+  tomcat::service { $application_root:
+    catalina_base => $application_root,
   }
 }
