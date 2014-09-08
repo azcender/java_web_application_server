@@ -47,11 +47,7 @@ define java_web_application_server::instance (
   include ::java_web_application_server::params
 
   # Create the instance directory based of application name
-  $instance_dir = "/srv/tomcat/${applicaton}"
-
-  file { "${instance_dir}":
-    ensure => directory,
-  }
+  $instance_dir = "/srv/tomcat/${application}"
 
   # Validate application list is a hash
   validate_hash($available_applications)
