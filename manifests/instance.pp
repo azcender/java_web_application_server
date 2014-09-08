@@ -46,6 +46,13 @@ define java_web_application_server::instance (
 
   include ::java_web_application_server::params
 
+  # Create the instance directory based of application name
+  $instance_dir = "/srv/tomcat/${applicaton}"
+
+  file { "${instance_dir}":
+    ensure => directory,
+  }
+
   # Validate application list is a hash
   validate_hash($available_applications)
   validate_hash($available_resources)
@@ -92,25 +99,25 @@ define java_web_application_server::instance (
 #    resources           => $resources,
 #  }
 
-  ::tomcat::instance { $application_root:
-    catalina_base => $application_root,
+  ::tomcat::instance { $application:
+    catalina_base => $instance_dir,
     source_url    => 'http://mirror.cogentco.com/pub/apache/tomcat/tomcat-7/v7.0.55/bin/apache-tomcat-7.0.55.tar.gz'
   }->
-  tomcat::config::server { $application_root:
-    catalina_base => $application_root,
+  tomcat::config::server { $application:
+    catalina_base => $instance_dir,
     port          => $server_port,
   }->
-  tomcat::config::server::connector { "${application_root}-http":
-    catalina_base         => $application_root,
+  tomcat::config::server::connector { "${application}-http":
+    catalina_base         => $instance_dir,
     port                  => $http_port,
     protocol              => 'HTTP/1.1',
   }->
-  tomcat::config::server::connector { "${application_root}-ajp":
-    catalina_base         => $application_root,
+  tomcat::config::server::connector { "${application}-ajp":
+    catalina_base         => $instance_dir,
     port                  => $ajp_port,
     protocol              => 'AJP/1.3',
   }->
-  tomcat::service { $application_root:
-    catalina_base => $application_root,
+  tomcat::service { $application:
+    catalina_base => $instance_dir,
   }
 }
