@@ -62,7 +62,13 @@ define java_web_application_server::instance (
   # string
   # validate_hash("${available_applications[$application][resources]}")
 
-  $resources = $available_applications[$application][resources]
+  $app_resources = $available_applications[$application][resources]
+
+  $resources = []
+
+  each($app_resources) |$resource| {
+    $resources += [$available_resources[$resource]]
+  }
 
   # Do validation of ports and application
   validate_re($server_port, '^[0-9]+$')
