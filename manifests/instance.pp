@@ -19,8 +19,6 @@
 #               - present, running, installed, stopped or absent
 #   (string) instance_basedir
 #               - The directory the tomcat instance will be installed
-#   (string) application_root
-#               - URI the application will be under: 'http://../myapp'
 #
 # Actions:
 #   Install tomcat instance
@@ -56,9 +54,6 @@ define java_web_application_server::instance (
   validate_re($server_port, '^[0-9]+$')
   validate_re($http_port, '^[0-9]+$')
   validate_re($ajp_port, '^[0-9]+$')
-
-  # Application root cannot have apaces
-  validate_re($application_root, '^[\S]+$')
 
   # Validate Maven coordinates and other strings
   validate_string($name)
