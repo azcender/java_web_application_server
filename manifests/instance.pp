@@ -91,5 +91,9 @@ define java_web_application_server::instance (
     catalina_base => $instance_dir,
   }
 
-  create_resources('tomcat::config::context::resource', $resources)
+  $resource_defaults = {
+    catalina_base => $isntance_dir,
+  }
+
+  create_resources('tomcat::config::context::resource', $resources, $resource_defaults)
 }
