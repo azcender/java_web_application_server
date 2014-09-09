@@ -113,7 +113,7 @@ define java_web_application_server::instance (
     port                  => $ajp_port,
     protocol              => 'AJP/1.3',
   }->
-  tomat::config::context { $application:
+  tomcat::config::context { $application:
     catalina_base => $instance_dir,
   }->
   tomcat::service { $application:
