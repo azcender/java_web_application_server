@@ -85,16 +85,6 @@ define java_web_application_server::instance (
     'absent'
     ])
 
-#  ::tomcat::instance { $application_root:
-#    ensure              => $ensure,
-#    http_port           => $http_port,
-#    ajp_port            => $ajp_port,
-#    server_port         => $server_port,
-#    instance_basedir    => $instance_basedir,
-#    available_resources => $available_resources,
-#    resources           => $resources,
-#  }
-
   ::tomcat::instance { $application:
     catalina_base => $instance_dir,
     source_url    => 'http://mirror.cogentco.com/pub/apache/tomcat/tomcat-7/v7.0.55/bin/apache-tomcat-7.0.55.tar.gz'
@@ -116,9 +106,8 @@ define java_web_application_server::instance (
   tomcat::config::context { $application:
     catalina_base => $instance_dir,
   }->
+  tomcat::config::context::resource { $resources: }->
   tomcat::service { $application:
     catalina_base => $instance_dir,
   }
-
-  create_resources('tomcat::config::context::resource', $resources)
 }
