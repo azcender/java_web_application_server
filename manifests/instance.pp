@@ -43,7 +43,7 @@ define java_web_application_server::instance (
   include ::java_web_application_server::params
 
   # Create the instance directory based of application name
-  $instance_dir = "/srv/tomcat/${application}"
+  $instance_dir = "/srv/tomcat/${name}"
 
   # Validate application list and resource list are arryas
   validate_array($applications)
