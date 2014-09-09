@@ -31,15 +31,14 @@
 #   puppetlabs/tomcat
 #
 define java_web_application_server::instance (
-  $application            = '',
-  $available_applications = '',
-  $available_resources    = '',
-  $http_port              = '8080',
-  $ajp_port               = '8009',
-  $server_port            = '8005',
-  $ensure                 = present,
-  $instance_basedir       = '/srv/tomcat',
-  $application_root       = '') {
+  $name,
+  $applications     = [],
+  $http_port        = '8080',
+  $ajp_port         = '8009',
+  $server_port      = '8005',
+  $ensure           = present,
+  $instance_basedir = '/srv/tomcat',
+  $resources        = []) {
 
   # This currently requires tomcat and maven classes
   require ::tomcat
@@ -49,26 +48,9 @@ define java_web_application_server::instance (
   # Create the instance directory based of application name
   $instance_dir = "/srv/tomcat/${application}"
 
-  # Validate application list is a hash
-  validate_hash($available_applications)
-  validate_hash($available_resources)
-
-  # Check hash values
-  validate_string("${available_applications[$application][group_id]}")
-  validate_string("${available_applications[$application][artifact_id]}")
-  validate_string("${available_applications[$application][version]}")
-
-  # The following line doesn't work properly. Sees an array of size one as a
-  # string
-  # validate_hash("${available_applications[$application][resources]}")
-
-  $app_resources = $available_applications[$application][resources]
-
-  $resources = []
-
-  each($app_resources) |$resource| {
-    $resources += [$available_resources[$resource]]
-  }
+  # Validate application list and resource list are arryas
+  validate_array($applications)
+  validate_array($resources)
 
   # Do validation of ports and application
   validate_re($server_port, '^[0-9]+$')
@@ -79,41 +61,39 @@ define java_web_application_server::instance (
   validate_re($application_root, '^[\S]+$')
 
   # Validate Maven coordinates and other strings
+  validate_string($name)
   validate_string($instance_basedir)
   validate_string($application)
 
   # Check ensure types
   validate_re($ensure, [
     'present',
-    'running',
-    'stopped',
-    'installed',
     'absent'
     ])
 
-  ::tomcat::instance { $application:
+  ::tomcat::instance { $name:
     catalina_base => $instance_dir,
     source_url    => 'http://mirror.cogentco.com/pub/apache/tomcat/tomcat-7/v7.0.55/bin/apache-tomcat-7.0.55.tar.gz'
   }->
-  tomcat::config::server { $application:
+  tomcat::config::server { $name:
     catalina_base => $instance_dir,
     port          => $server_port,
   }->
-  tomcat::config::server::connector { "${application}-http":
+  tomcat::config::server::connector { "${name}-http":
     catalina_base         => $instance_dir,
     port                  => $http_port,
     protocol              => 'HTTP/1.1',
   }->
-  tomcat::config::server::connector { "${application}-ajp":
+  tomcat::config::server::connector { "${name}-ajp":
     catalina_base         => $instance_dir,
     port                  => $ajp_port,
     protocol              => 'AJP/1.3',
   }->
-  tomcat::config::context { $application:
+  tomcat::config::context { $name:
     catalina_base => $instance_dir,
   }->
   tomcat::config::context::resource { $resources: }->
-  tomcat::service { $application:
+  tomcat::service { $name:
     catalina_base => $instance_dir,
   }
 }
