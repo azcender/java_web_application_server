@@ -47,7 +47,7 @@ define java_web_application_server::instance (
 
   # Validate application list and resource list are arryas
   validate_array($applications)
-  validate_array($resources)
+  validate_hash($resources)
 
   # Do validation of ports and application
   validate_re($server_port, '^[0-9]+$')
@@ -86,8 +86,10 @@ define java_web_application_server::instance (
   tomcat::config::context { $name:
     catalina_base => $instance_dir,
   }->
-  tomcat::config::context::resource { $resources: }->
+#  tomcat::config::context::resource { $resources: }->
   tomcat::service { $name:
     catalina_base => $instance_dir,
   }
+
+  create_resources('tomcat::config::context::resource', $resources)
 }
