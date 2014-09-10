@@ -60,7 +60,7 @@ define java_web_application_server::maven (
 
   notice($application_url)
 
-  ::tomcat::war { $name:
+  ::tomcat::war { "${name}.war" :
     catalina_base => $catalina_base,
     war_source    => $application_url,
   }
