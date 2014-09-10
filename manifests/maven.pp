@@ -58,6 +58,8 @@ define java_web_application_server::maven (
   $application_url =
     "${maven_repo}/${_group_id}/${artifactid}/${version}/${artifactid}-${version}.${packaging}"
 
+  notice($application_url)
+
   ::tomcat::war { $name:
     catalina_base => $catalina_base,
     war_source    => $application_url,
