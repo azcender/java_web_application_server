@@ -86,14 +86,25 @@ define java_web_application_server::instance (
   tomcat::config::context { $name:
     catalina_base => $instance_dir,
   }->
-#  tomcat::config::context::resource { $resources: }->
+  tomcat::war {
+    catalina_base => $instance_dir,
+    war_source    => 
+  }
   tomcat::service { $name:
     catalina_base => $instance_dir,
   }
 
+  # Setup context resources
   $resource_defaults = {
     catalina_base => $instance_dir,
   }
 
   create_resources('tomcat::config::context::resource', $resources, $resource_defaults)
+
+  # Install apps
+  $application_defaults = {
+    catalina_base => $instance_dir,
+  }
+
+  create_resources('tomcat::war', $applications, $application_defaults)
 }

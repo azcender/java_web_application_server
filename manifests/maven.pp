@@ -35,19 +35,17 @@ define java_web_application_server::maven (
   $groupid,
   $artifactid,
   $version,
-  $repos,
-  $packaging,
-  $library_directory = '/usr/share/tomcat6/lib',
-  $ensure            = 'present') {
-
-  # Ensure maven is here
-  require ::maven::maven
+  $maven_repo,
+  $catalina_base,
+  $packaging = 'jar',
+  $ensure    = 'present') {
 
   # Validate Maven coordinates and other strings
   validate_string($groupid)
   validate_string($artifactid)
   validate_string($version)
-  validate_string($library_directory)
+  validate_string($catalina_base)
+  validate_string($maven_repo)
 
   validate_re($packaging, [
     'war',
@@ -55,16 +53,13 @@ define java_web_application_server::maven (
     'jar'
     ])
 
-  # Repo array is requied and an array
-  validate_array($repos)
+  $_group_id = regsubst($groupid, '\.', '/', 'G')
 
-  $maven_location =
-    "${library_directory}/${artifactid}-${version}.${packaging}"
+  $application_url =
+    "${maven_repo}/${_group_id}/${artifactid}/${version}/${artifactid}-${version}.${packaging}"
 
-  maven {$maven_location:
-    groupid    => $groupid,
-    artifactid => $artifactid,
-    version    => $version,
-    repos      => $repos,
+  ::tomcat::war { $name:
+    catalina_base => $catalina_base,
+    war_source    => $application_url,
   }
 }
