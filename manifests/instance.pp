@@ -69,28 +69,24 @@ define java_web_application_server::instance (
     catalina_base => $instance_dir,
     source_url    => 'http://mirror.cogentco.com/pub/apache/tomcat/tomcat-7/v7.0.55/bin/apache-tomcat-7.0.55.tar.gz'
   }->
-  tomcat::config::server { $name:
+  ::tomcat::config::server { $name:
     catalina_base => $instance_dir,
     port          => $server_port,
   }->
-  tomcat::config::server::connector { "${name}-http":
+  ::tomcat::config::server::connector { "${name}-http":
     catalina_base         => $instance_dir,
     port                  => $http_port,
     protocol              => 'HTTP/1.1',
   }->
-  tomcat::config::server::connector { "${name}-ajp":
+  ::tomcat::config::server::connector { "${name}-ajp":
     catalina_base         => $instance_dir,
     port                  => $ajp_port,
     protocol              => 'AJP/1.3',
   }->
-  tomcat::config::context { $name:
+  ::tomcat::config::context { $name:
     catalina_base => $instance_dir,
   }->
-  tomcat::war {
-    catalina_base => $instance_dir,
-    war_source    => 
-  }
-  tomcat::service { $name:
+  ::tomcat::service { $name:
     catalina_base => $instance_dir,
   }
 
@@ -99,12 +95,12 @@ define java_web_application_server::instance (
     catalina_base => $instance_dir,
   }
 
-  create_resources('tomcat::config::context::resource', $resources, $resource_defaults)
+  create_resources('::tomcat::config::context::resource', $resources, $resource_defaults)
 
   # Install apps
   $application_defaults = {
     catalina_base => $instance_dir,
   }
 
-  create_resources('tomcat::war', $applications, $application_defaults)
+  create_resources('::java_web_application_server::maven', $applications, $application_defaults)
 }
