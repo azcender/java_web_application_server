@@ -46,7 +46,7 @@ define java_web_application_server::instance (
   $instance_dir = "/srv/tomcat/${name}"
 
   # Validate application list and resource list are arryas
-  validate_array($applications)
+  validate_hash($applications)
   validate_hash($resources)
 
   # Do validation of ports and application
