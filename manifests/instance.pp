@@ -68,6 +68,7 @@ define java_web_application_server::instance (
 
   ::tomcat::instance { $name:
     catalina_base => $instance_dir,
+    source_url    => $source_url,
   }->
   ::tomcat::config::server { $name:
     catalina_base => $instance_dir,
