@@ -35,6 +35,7 @@ define java_web_application_server::instance (
   $server_port      = '8005',
   $ensure           = present,
   $instance_basedir,
+  $source_url,
   $resources        = []) {
 
   # This currently requires tomcat and maven classes
