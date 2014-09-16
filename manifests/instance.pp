@@ -34,6 +34,7 @@ define java_web_application_server::instance (
   $ajp_port         = '8009',
   $server_port      = '8005',
   $ensure           = present,
+  $remove_examples  = true,
   $instance_basedir,
   $source_url,
   $resources        = []) {
@@ -89,6 +90,13 @@ define java_web_application_server::instance (
   }->
   ::tomcat::service { $name:
     catalina_base => $instance_dir,
+  }
+
+  # Remove examples in needed¬
+  if $remove_examples {
+    file { "${instance_basedir}/${name}/webapps/examples":
+      ensure => absent,
+    }
   }
 
   # Setup context resources
