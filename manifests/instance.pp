@@ -93,11 +93,11 @@ define java_web_application_server::instance (
   }
 
   # Remove examples in needed¬
-  if $remove_examples {
+#  if $remove_examples {
     file { "${instance_basedir}/${name}/webapps/examples":
       ensure => absent,
     }
-  }
+#  }
 
   # Setup context resources
   $resource_defaults = {
