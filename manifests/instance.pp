@@ -111,5 +111,5 @@ define java_web_application_server::instance (
     catalina_base => $instance_dir,
   }
 
-#  create_resources('::java_web_application_server::maven', $applications, $application_defaults)
+  create_resources('::java_web_application_server::maven', $applications, $application_defaults)
 }
