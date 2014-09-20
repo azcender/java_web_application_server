@@ -71,7 +71,7 @@ define java_web_application_server::instance (
     catalina_base => $instance_dir,
     source_url    => $source_url,
   }->
-  ::tomcat::config::server { $name:
+ ::tomcat::config::server { $name:
     catalina_base => $instance_dir,
     port          => $server_port,
   }->
@@ -92,12 +92,12 @@ define java_web_application_server::instance (
     catalina_base => $instance_dir,
   }
 
-  # Remove examples in needed¬
-#  if $remove_examples {
-    file { "${instance_basedir}/${name}/webapps/examples":
-      ensure => absent,
-    }
-#  }
+  # Remove example apps
+  # if $remove_examples {
+      file { "${instance_basedir}/${name}/webapps/examples":
+        ensure => absent,
+      }
+  # }
 
   # Setup context resources
   $resource_defaults = {

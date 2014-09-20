@@ -68,6 +68,9 @@ class java_web_application_server::init (
     ajp_port         => $ajp_port,
     server_port      => $server_port,
     instance_basedir => $instance_basedir,
+  }->
+  ::tomcat::service { 'tomcat-$application_name':
+    catalina_base    => $instance_basedir,
   }
 
   # The application install directory is based off of the Tomcat instance
