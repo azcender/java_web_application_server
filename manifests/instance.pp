@@ -75,23 +75,31 @@ define java_web_application_server::instance (
  ::tomcat::config::server { $name:
     catalina_base => $instance_dir,
     port          => $server_port,
-    require       => Tomcat::Instance["$name"],
-  }->
+    require       => ::Tomcat::Instance[$name],
+  }
+
   ::tomcat::config::server::connector { "${name}-http":
     catalina_base         => $instance_dir,
     port                  => $http_port,
     protocol              => 'HTTP/1.1',
-  }->
+    require               => ::Tomcat::Config::Server[$name],
+  }
+
   ::tomcat::config::server::connector { "${name}-ajp":
     catalina_base         => $instance_dir,
     port                  => $ajp_port,
     protocol              => 'AJP/1.3',
-  }->
+    require               => ::Tomcat::Config::Server[$name]
+  }
+
   ::tomcat::config::context { $name:
     catalina_base => $instance_dir,
-  }->
+    require       => ::Tomcat::Instance[$name],
+  }
+
   ::tomcat::service { $name:
     catalina_base => $instance_dir,
+    require       => [::Tomcat::Config::Server[$name], ::Tomcat::Config::Context[$name]],
   }
 
   # Remove example apps
@@ -104,6 +112,7 @@ define java_web_application_server::instance (
   # Setup context resources
   $resource_defaults = {
     catalina_base => $instance_dir,
+    require       => ::Tomcat::Config::Context[$name],
   }
 
   create_resources('::tomcat::config::context::resource', $resources, $resource_defaults)
