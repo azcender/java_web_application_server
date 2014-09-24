@@ -101,13 +101,15 @@ define java_web_application_server::instance (
   }
 
   ::tomcat::service { $name:
+    use_init      => true,
+    service_name  => 'tomcat-${name}',
     catalina_base => $instance_dir,
-    require       => [::Tomcat::Config::Server[$name], ::Tomcat::Config::Context[$name]],
+    require       => [::Tomcat::Config::Server[$name]],
   }
 
   # Remove example apps
   # if $remove_examples {
-      file { "${instance_basedir}/${name}/webapps/examples":
+      file { "${instance_dir}/webapps/examples":
         ensure => absent,
       }
   # }
