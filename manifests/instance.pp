@@ -81,7 +81,7 @@ define java_web_application_server::instance (
   ::tomcat::config::server::connector { "${name}-http":
     catalina_base         => $instance_dir,
     port                  => $http_port,
-    protocol              => 'HTTP/1.1','
+    protocol              => 'HTTP/1.1',
     additional_attributes => {
       'connectionTimeout' => '10000'
     },
