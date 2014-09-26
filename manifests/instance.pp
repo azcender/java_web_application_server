@@ -64,6 +64,16 @@ define java_web_application_server::instance (
     'absent'
     ])
 
+  # Add the Apache balancer front end
+  ::apache::balancer { $name:
+    collect_exported => false,
+  }
+
+  ::apache::balancermember { $name:
+    balancer_cluster => $name,
+    url              => "ajp://${::fqdn}:$ajp_port",
+    options          => ['ping=5', 'disablereuse=on', 'retry=5', 'ttl=120'],  }
+
   # Create the instance directory based of application name
   $instance_dir = "${instance_basedir}/${name}"
 
