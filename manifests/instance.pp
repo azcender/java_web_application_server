@@ -110,14 +110,12 @@ define java_web_application_server::instance (
     require       => ::Tomcat::Instance[$name],
   }
 
-  ::tomcat::config::server::service { $name:
+  ::tomcat::service { "${name}":
+    #use_init      => true,
+    service_name  => "${name}",
+    catalina_home => $instance_dir,
     catalina_base => $instance_dir,
     require       => [::Tomcat::Config::Server[$name]],
-  } ->
-  ::tomcat::service { "tomcat-${name}":
-    use_init      => true,
-    service_name  => "tomcat-${name}",
-    catalina_base => $instance_dir,
   }
 
   # Remove example apps
