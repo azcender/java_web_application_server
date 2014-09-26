@@ -102,7 +102,6 @@ define java_web_application_server::instance (
 
   ::tomcat::config::server::service { $name:
     catalina_base => $instance_dir,
-    ensure        => present,
     require       => [::Tomcat::Config::Server[$name]],
   } ->
   ::tomcat::service { "tomcat-${name}":
