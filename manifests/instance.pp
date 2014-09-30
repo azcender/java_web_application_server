@@ -29,15 +29,15 @@
 #   puppetlabs/tomcat
 #
 define java_web_application_server::instance (
-  $applications     = [],
-  $tomcat_http_port        = '8080',
-  $tomcat_ajp_port         = '8009',
-  $tomcat_server_port      = '8005',
-  $ensure           = present,
-  $remove_examples  = true,
+  $applications        = [],
+  $tomcat_http_port    = '8080',
+  $tomcat_ajp_port     = '8009',
+  $tomcat_server_port  = '8005',
+  $ensure              = present,
+  $remove_examples     = true,
   $instance_basedir,
   $source_url,
-  $resources        = []) {
+  $resources           = []) {
 
   # This currently requires tomcat and maven classes
   require ::tomcat
@@ -52,11 +52,14 @@ define java_web_application_server::instance (
   validate_re($tomcat_server_port, '^[0-9]+$')
   validate_re($tomcat_http_port, '^[0-9]+$')
   validate_re($tomcat_ajp_port, '^[0-9]+$')
+  validate_re($httpd_http_port, '^[0-9]+$')
 
   # Validate Maven coordinates and other strings
   validate_string($name)
   validate_string($instance_basedir)
   validate_string($application)
+  validate_string($httpd_vhost_header)
+  validate_string($httpd_docroot)
 
   # Check ensure types
   validate_re($ensure, [
@@ -66,24 +69,24 @@ define java_web_application_server::instance (
 
   # Add the Apache balancer front end
   ::apache::balancer { $name:
-    collect_exported => false,
-    #proxy_set        => {'stickysession' => 'JSESSIONID'},
+    collect_exported  => false,
   }
 
   ::apache::balancermember { $name:
     balancer_cluster => $name,
     url              => "ajp://${::fqdn}:$tomcat_ajp_port",
-    options          => ['ping=5', 'disablereuse=on', 'retry=5', 'ttl=120'],  }
+    options          => ['ping=5', 'disablereuse=on', 'retry=5', 'ttl=120'],
+  }
 
   $proxy_pass = [
-    { 'path' => '/', 'url' => "balancer://${name}/" },
+    { 'path' => '/',  'url' => "balancer://${name}/" },
     { 'path' => '/*', 'url' => "balancer://${name}/" }
   ]
 
   apache::vhost { "vhost-${name}":
     servername   => $httpd_vhost_header,
     port         => $httpd_port,
-    docroot      => '/var/www'
+    #docroot      => '/var/www'
     #docroot      => $httpd_docroot,
     proxy_pass   => $proxy_pass,
   }
