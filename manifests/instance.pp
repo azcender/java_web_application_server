@@ -67,12 +67,25 @@ define java_web_application_server::instance (
   # Add the Apache balancer front end
   ::apache::balancer { $name:
     collect_exported => false,
+    #proxy_set        => {'stickysession' => 'JSESSIONID'},
   }
 
   ::apache::balancermember { $name:
     balancer_cluster => $name,
     url              => "ajp://${::fqdn}:$ajp_port",
     options          => ['ping=5', 'disablereuse=on', 'retry=5', 'ttl=120'],  }
+
+  $proxy_pass = [
+    { 'path' => '/', 'url' => "balancer://${name}/" },
+    { 'path' => '/*', 'url' => "balancer://${name}/" }
+  ]
+
+  apache::vhost { "vhost-${name}":
+    servername   => $httpd_vhost_header,
+    port         => $httpd_port,
+    docroot      => $httpd_docroot,
+    proxy_pass   => $proxy_pass,
+  }
 
   # Create the instance directory based of application name
   $instance_dir = "${instance_basedir}/${name}"
