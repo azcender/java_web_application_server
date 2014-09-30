@@ -33,6 +33,9 @@ define java_web_application_server::instance (
   $tomcat_http_port    = '8080',
   $tomcat_ajp_port     = '8009',
   $tomcat_server_port  = '8005',
+  $httpd_http_port,
+  $httpd_vhost_header,
+  $httpd_docroot,
   $ensure              = present,
   $remove_examples     = true,
   $instance_basedir,
@@ -48,7 +51,7 @@ define java_web_application_server::instance (
   validate_hash($applications)
   validate_hash($resources)
 
-  # Do validation of ports and application
+  # Do validation of ports
   validate_re($tomcat_server_port, '^[0-9]+$')
   validate_re($tomcat_http_port, '^[0-9]+$')
   validate_re($tomcat_ajp_port, '^[0-9]+$')
@@ -85,8 +88,7 @@ define java_web_application_server::instance (
 
   apache::vhost { "vhost-${name}":
     servername   => $httpd_vhost_header,
-    port         => $httpd_port,
-    #docroot      => '/var/www'
+    port         => $httpd_http_port,
     #docroot      => $httpd_docroot,
     proxy_pass   => $proxy_pass,
   }
