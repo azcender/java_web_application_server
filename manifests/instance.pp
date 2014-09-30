@@ -89,7 +89,7 @@ define java_web_application_server::instance (
   apache::vhost { "vhost-${name}":
     servername   => $httpd_vhost_header,
     port         => $httpd_http_port,
-    #docroot      => $httpd_docroot,
+    docroot      => $httpd_docroot,
     proxy_pass   => $proxy_pass,
   }
 
