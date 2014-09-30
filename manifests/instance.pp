@@ -9,11 +9,11 @@
 #              - The applications available to host
 #   (has)    available_resources
 #              - The resources available to the applications
-#   (int)    http_port
+#   (int)    tomcat_http_port
 #              - HTTP port this application can be found on
-#   (int)    ajp_port
+#   (int)    tomcat_ajp_port
 #               - If AJP is used the web front end can integrate here
-#   (int)    server_port
+#   (int)    tomcat_server_port
 #               - The server control port for Tomcat
 #   (enum)   ensure
 #               - present, running, installed, stopped or absent
@@ -30,9 +30,9 @@
 #
 define java_web_application_server::instance (
   $applications     = [],
-  $http_port        = '8080',
-  $ajp_port         = '8009',
-  $server_port      = '8005',
+  $tomcat_http_port        = '8080',
+  $tomcat_ajp_port         = '8009',
+  $tomcat_server_port      = '8005',
   $ensure           = present,
   $remove_examples  = true,
   $instance_basedir,
@@ -49,9 +49,9 @@ define java_web_application_server::instance (
   validate_hash($resources)
 
   # Do validation of ports and application
-  validate_re($server_port, '^[0-9]+$')
-  validate_re($http_port, '^[0-9]+$')
-  validate_re($ajp_port, '^[0-9]+$')
+  validate_re($tomcat_server_port, '^[0-9]+$')
+  validate_re($tomcat_http_port, '^[0-9]+$')
+  validate_re($tomcat_ajp_port, '^[0-9]+$')
 
   # Validate Maven coordinates and other strings
   validate_string($name)
@@ -72,7 +72,7 @@ define java_web_application_server::instance (
 
   ::apache::balancermember { $name:
     balancer_cluster => $name,
-    url              => "ajp://${::fqdn}:$ajp_port",
+    url              => "ajp://${::fqdn}:$tomcat_ajp_port",
     options          => ['ping=5', 'disablereuse=on', 'retry=5', 'ttl=120'],  }
 
   $proxy_pass = [
@@ -98,13 +98,13 @@ define java_web_application_server::instance (
 
  ::tomcat::config::server { $name:
     catalina_base => $instance_dir,
-    port          => $server_port,
+    port          => $tomcat_server_port,
     require       => ::Tomcat::Instance[$name],
   }
 
   ::tomcat::config::server::connector { "${name}-http":
     catalina_base         => $instance_dir,
-    port                  => $http_port,
+    port                  => $tomcat_http_port,
     protocol              => 'HTTP/1.1',
     additional_attributes => {
       'connectionTimeout' => '10000'
@@ -114,7 +114,7 @@ define java_web_application_server::instance (
 
   ::tomcat::config::server::connector { "${name}-ajp":
     catalina_base         => $instance_dir,
-    port                  => $ajp_port,
+    port                  => $tomcat_ajp_port,
     protocol              => 'AJP/1.3',
     require               => ::Tomcat::Config::Server[$name]
   }
