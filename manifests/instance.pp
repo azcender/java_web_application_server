@@ -72,7 +72,6 @@ define java_web_application_server::instance (
 
   # Apache submodules required for proxy
   apache::mod { 'proxy_ajp': }
-  apache::mod { 'proxy_balancer': }
   apache::mod { 'proxy_html': }
 
   # Add the Apache balancer front end
