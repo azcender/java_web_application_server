@@ -70,6 +70,12 @@ define java_web_application_server::instance (
     'absent'
     ])
 
+  # Apache submodules required for proxy
+  apache::mod { 'proxy_ajp': }
+  apache::mod { 'proxy_balancer': }
+  apache::mod { 'proxy_html': }
+  apache::mod { 'proxy_http': }
+
   # Add the Apache balancer front end
   ::apache::balancer { $name:
     collect_exported  => false,
