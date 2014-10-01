@@ -33,9 +33,6 @@ define java_web_application_server::instance (
   $tomcat_http_port    = '8080',
   $tomcat_ajp_port     = '8009',
   $tomcat_server_port  = '8005',
-  $httpd_http_port,
-  $httpd_vhost_header,
-  $httpd_docroot,
   $ensure              = present,
   $remove_examples     = true,
   $instance_basedir,
@@ -69,10 +66,6 @@ define java_web_application_server::instance (
     'present',
     'absent'
     ])
-
-  # Apache submodules required for proxy
-  apache::mod { 'proxy_ajp': }
-  apache::mod { 'proxy_html': }
 
   # Add the Apache balancer front end
   ::apache::balancer { $name:
