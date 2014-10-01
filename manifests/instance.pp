@@ -52,11 +52,13 @@ define java_web_application_server::instance (
   validate_hash($applications)
   validate_hash($resources)
 
-  # Do validation of ports
+  # Do validation of tomcat ports
   validate_re($tomcat_server_port, '^[0-9]+$')
   validate_re($tomcat_http_port, '^[0-9]+$')
   validate_re($tomcat_ajp_port, '^[0-9]+$')
-  validate_re($httpd_http_port, '^[0-9]+$')
+
+  # Do validation of httpd port
+  validate_re($port, '^[0-9]+$')
 
   # Validate Maven coordinates and other strings
   validate_string($name)
