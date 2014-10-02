@@ -15,6 +15,8 @@
 #               - If AJP is used the web front end can integrate here
 #   (int)    tomcat_server_port
 #               - The server control port for Tomcat
+#   (string) balancer
+#               - Name of the balancer tomcat instance is assigned to
 #   (enum)   ensure
 #               - present, running, installed, stopped or absent
 #   (string) instance_basedir
@@ -33,9 +35,8 @@ define java_web_application_server::instance (
   $tomcat_http_port    = '8080',
   $tomcat_ajp_port     = '8009',
   $tomcat_server_port  = '8005',
-  $httpd_http_port,
-  $httpd_vhost_header,
-  $httpd_docroot,
+  # TODO: probably not require balancer, re-evaluate
+  $balancer,
   $ensure              = present,
   $remove_examples     = true,
   $instance_basedir,
@@ -51,11 +52,10 @@ define java_web_application_server::instance (
   validate_hash($applications)
   validate_hash($resources)
 
-  # Do validation of ports
+  # Do validation of tomcat ports
   validate_re($tomcat_server_port, '^[0-9]+$')
   validate_re($tomcat_http_port, '^[0-9]+$')
   validate_re($tomcat_ajp_port, '^[0-9]+$')
-  validate_re($httpd_http_port, '^[0-9]+$')
 
   # Validate Maven coordinates and other strings
   validate_string($name)
@@ -70,27 +70,10 @@ define java_web_application_server::instance (
     'absent'
     ])
 
-  # Add the Apache balancer front end
-  ::apache::balancer { $name:
-    collect_exported  => false,
-  }
-
-  ::apache::balancermember { $name:
-    balancer_cluster => $name,
+  @@::apache::balancermember { $name:
+    balancer_cluster => $balancer,
     url              => "ajp://${::fqdn}:$tomcat_ajp_port",
     options          => ['ping=5', 'disablereuse=on', 'retry=5', 'ttl=120'],
-  }
-
-  $proxy_pass = [
-    { 'path' => '/',  'url' => "balancer://${name}/" },
-    { 'path' => '/*', 'url' => "balancer://${name}/" }
-  ]
-
-  apache::vhost { "vhost-${name}":
-    servername   => $httpd_vhost_header,
-    port         => $httpd_http_port,
-    docroot      => $httpd_docroot,
-    proxy_pass   => $proxy_pass,
   }
 
   # Create the instance directory based of application name
