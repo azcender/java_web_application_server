@@ -73,7 +73,7 @@ define java_web_application_server::instance (
   @@::apache::balancermember { $name:
     balancer_cluster => $balancer,
     url              => "ajp://${::fqdn}:$tomcat_ajp_port",
-    options          => ['ping=5', 'disablereuse=on', 'retry=5', 'ttl=120'],
+    options          => ['ping=5', 'retry=5', 'ttl=120', "route=${name}"],
   }
 
   # Create the instance directory based of application name
@@ -104,7 +104,15 @@ define java_web_application_server::instance (
     catalina_base         => $instance_dir,
     port                  => $tomcat_ajp_port,
     protocol              => 'AJP/1.3',
-    require               => ::Tomcat::Config::Server[$name]
+    require               => ::Tomcat::Config::Server[$name],
+  }
+
+  ::tomcat::config::server::engine { "${name}-engine":
+    catalina_base => $instance_dir,
+    default_host  => 'localhost',
+    jvm_route     => $name,
+    engine_name   => 'Catalina',
+    require       => ::Tomcat::Config::Server[$name],
   }
 
   ::tomcat::config::context { $name:
