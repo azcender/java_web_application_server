@@ -41,7 +41,7 @@ define java_web_application_server::instance (
   $remove_examples     = true,
   $instance_basedir,
   $source_url,
-  $resources           = []) {
+  $resources           = {}) {
 
   # This currently requires tomcat and maven classes
   require ::tomcat
