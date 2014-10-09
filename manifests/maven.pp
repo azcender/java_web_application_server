@@ -59,6 +59,9 @@ define java_web_application_server::maven (
   $application_url =
     "${maven_repo}/${_group_id}/${artifactid}/${version}/${artifactid}-${version}.${packaging}"
 
+  # Stage through wget. Not curl.
+  $staging_http_get = 'wget'
+
   ::tomcat::war { "${catalina_base}-${name}.war" :
     catalina_base => $catalina_base,
     war_source    => $application_url,
