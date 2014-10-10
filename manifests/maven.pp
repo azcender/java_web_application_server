@@ -59,7 +59,7 @@ define java_web_application_server::maven (
   $application_url =
     "${maven_repo}/${_group_id}/${artifactid}/${version}/${artifactid}-${version}.${packaging}"
 
-  ::war::fetch { $applications_url:
+  ::wget::fetch { $applications_url:
     destination => "${catalina_base}/webapps", 
     cache_dir   => '/var/cache/wget',
   }
