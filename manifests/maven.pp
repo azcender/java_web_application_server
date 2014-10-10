@@ -59,9 +59,14 @@ define java_web_application_server::maven (
   $application_url =
     "${maven_repo}/${_group_id}/${artifactid}/${version}/${artifactid}-${version}.${packaging}"
 
-  ::tomcat::war { "${catalina_base}-${name}.war" :
-    catalina_base => $catalina_base,
-    war_source    => $application_url,
-    war_name      => $war_name, 
+  ::war::fetch { $applications_url:
+    destination => "${catalina_base}/webapps", 
+    cache_dir   => '/var/cache/wget',
   }
+
+#  ::tomcat::war { "${catalina_base}-${name}.war" :
+#    catalina_base => $catalina_base,
+#    war_source    => $application_url,
+#    war_name      => $war_name, 
+#  }
 }
