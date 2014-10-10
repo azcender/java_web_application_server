@@ -62,6 +62,7 @@ define java_web_application_server::maven (
   ::wget::fetch { $applications_url:
     destination => "${catalina_base}/webapps", 
     cache_dir   => '/var/cache/wget',
+    cache_file  => "${artifactid}-${version}.${packaging}",
   }
 
 #  ::tomcat::war { "${catalina_base}-${name}.war" :
