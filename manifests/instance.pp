@@ -70,7 +70,7 @@ define java_web_application_server::instance (
     'absent'
     ])
 
-  @@::apache::balancermember { $name:
+  @@::apache::balancermember { "${name}-${fqdn}":
     balancer_cluster => $balancer,
     url              => "ajp://${::fqdn}:$tomcat_ajp_port",
     options          => ['ping=5', 'retry=5', 'ttl=120', "route=${name}"],
