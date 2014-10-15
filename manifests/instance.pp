@@ -60,7 +60,6 @@ define java_web_application_server::instance (
   # Validate Maven coordinates and other strings
   validate_string($name)
   validate_string($instance_basedir)
-  validate_string($application)
   validate_string($httpd_vhost_header)
   validate_string($httpd_docroot)
 
