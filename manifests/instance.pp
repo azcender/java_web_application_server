@@ -71,7 +71,7 @@ define java_web_application_server::instance (
     ])
 
   # if the balancer is empty, or false skip. Else export balancer member.
-  if str2bool($balancer) {
+  if ! empty($balancer) {
     @@::apache::balancermember { "${name}-${fqdn}":
       balancer_cluster => $balancer,
       url              => "ajp://${::fqdn}:$tomcat_ajp_port",
