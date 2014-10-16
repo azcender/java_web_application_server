@@ -31,7 +31,7 @@
 #   puppetlabs/tomcat
 #
 define java_web_application_server::instance (
-  $applications        = [],
+  $applications        = {},
   $tomcat_http_port    = '8080',
   $tomcat_ajp_port     = '8009',
   $tomcat_server_port  = '8005',
