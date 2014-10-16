@@ -36,7 +36,7 @@ define java_web_application_server::instance (
   $tomcat_ajp_port     = '8009',
   $tomcat_server_port  = '8005',
   # TODO: probably not require balancer, re-evaluate
-  $balancer,
+  $balancer            = '',
   $ensure              = present,
   $remove_examples     = true,
   $instance_basedir,
@@ -69,10 +69,13 @@ define java_web_application_server::instance (
     'absent'
     ])
 
-  @@::apache::balancermember { "${name}-${fqdn}":
-    balancer_cluster => $balancer,
-    url              => "ajp://${::fqdn}:$tomcat_ajp_port",
-    options          => ['ping=5', 'retry=5', 'ttl=120', "route=${name}"],
+  # if the balancer is empty, or false skip. Else export balancer member.
+  if str2bool($balancer) {
+    @@::apache::balancermember { "${name}-${fqdn}":
+      balancer_cluster => $balancer,
+      url              => "ajp://${::fqdn}:$tomcat_ajp_port",
+      options          => ['ping=5', 'retry=5', 'ttl=120', "route=${name}"],
+    }
   }
 
   # Create the instance directory based of application name
