@@ -44,9 +44,6 @@ define java_web_application_server::instance (
   $source_url,
   $resources           = {}) {
 
-  # This currently requires tomcat and maven classes
-  require ::tomcat
-
   include ::java_web_application_server::params
 
   # Validate application list and resource list are arryas
@@ -149,6 +146,7 @@ define java_web_application_server::instance (
   # Install apps
   $application_defaults = {
     catalina_base => $instance_dir,
+    require       => ::Tomcat::Instance[$name],
   }
 
   create_resources('::java_web_application_server::maven', $applications, $application_defaults)
