@@ -76,6 +76,18 @@ define java_web_application_server::instance (
     }
   }
 
+  # The tomcat class relies on the staging class. The staging class uses a
+  # cache directory. The permissions on the cache directory must be loose
+  # enough to be read globally.
+  #
+  # We will create the staging directory here for more control.
+  file { $::staging::params::path:
+    owner   => $::staging::params::owner,
+    group   => $::staging::params::group,
+    mode    => $::staging::params::mode,
+    recurse => true,
+  }
+
   # Create the instance directory based of application name
   $instance_dir = "${instance_basedir}/${name}"
 
