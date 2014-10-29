@@ -32,17 +32,17 @@
 #
 
 define java_web_application_server::instance (
-  $applications        = {},
-  $tomcat_http_port    = '8080',
-  $tomcat_ajp_port     = '8009',
-  $tomcat_server_port  = '8005',
-  # TODO: probably not require balancer, re-evaluate
-  $balancer            = '',
-  $ensure              = present,
-  $remove_examples     = true,
   $instance_basedir,
   $source_url,
-  $resources           = {}) {
+  $applications          = {},
+  $tomcat_http_port      = '8080',
+  $tomcat_ajp_port       = '8009',
+  $tomcat_server_port    = '8005',
+  $balancer              = '',
+  $ensure                = present,
+  $remove_examples       = true,
+  $globalnamingresources = {},
+  $resources             = {}) {
 
   include ::java_web_application_server::params
 
@@ -124,19 +124,20 @@ define java_web_application_server::instance (
   }
 
   ::tomcat::service { "${name}":
-    #use_init      => true,
     service_name  => "${name}",
     catalina_home => $instance_dir,
     catalina_base => $instance_dir,
     require       => [::Tomcat::Config::Server[$name]],
   }
 
-  # Remove example apps
-  # if $remove_examples {
-      file { "${instance_dir}/webapps/examples":
-        ensure => absent,
-      }
-  # }
+  # Setup server globalnamingresources
+  $globalnamingresources_defaults = {
+    catalina_base => $instance_dir,
+    require       => ::Tomcat::Config::Server[$name],
+  }
+
+  create_resources('::tomcat::config::server::globalnamingresources',
+                   $globalnamingresources, $globalnamingresources_defaults)
 
   # Setup context resources
   $resource_defaults = {
@@ -144,7 +145,8 @@ define java_web_application_server::instance (
     require       => ::Tomcat::Config::Context[$name],
   }
 
-  create_resources('::tomcat::config::context::resource', $resources, $resource_defaults)
+  create_resources('::tomcat::config::context::resource', $resources,
+                   $resource_defaults)
 
   # Install apps
   $application_defaults = {
