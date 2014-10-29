@@ -104,6 +104,9 @@ define java_web_application_server::instance (
     catalina_base         => $instance_dir,
     port                  => $tomcat_ajp_port,
     protocol              => 'AJP/1.3',
+    additional_attributes => {
+      'connectionTimeout' => '10000'
+    },
     require               => ::Tomcat::Config::Server[$name],
   }
 
