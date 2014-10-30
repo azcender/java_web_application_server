@@ -41,6 +41,7 @@ define java_web_application_server::instance (
   $balancer              = '',
   $ensure                = present,
   $remove_examples       = true,
+  $resource_links        = {},
   $globalnamingresources = {},
   $resources             = {}) {
 
@@ -147,6 +148,16 @@ define java_web_application_server::instance (
 
   create_resources('::tomcat::config::context::resource', $resources,
                    $resource_defaults)
+
+  # Setup context resources
+  $resource_link_defaults = {
+    catalina_base => $instance_dir,
+    require       => ::Tomcat::Config::Context[$name],
+  }
+
+  create_resources('::tomcat::config::context::resourcelink', $resource_links,
+                   $resource_link_defaults)
+
 
   # Install apps
   $application_defaults = {
