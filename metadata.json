@@ -1,0 +1,28 @@
+{
+  "name": "azcender-java_web_application_server",
+  "version": "0.0.1",
+  "author": "Bryan Belanger",
+  "summary": "Module for managing an local load java_web_application_server",
+  "license": "Apache License, Version 2.0",
+  "source": "https://github.com/azcender/java_web_application_server",
+  "project_page": "https://github.com/azcender/java_web_application_server",
+  "issues_url": "https://github.com/azcender/java_web_application_server/issues",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": "3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
+  ],
+  "dependencies": []
