@@ -32,55 +32,43 @@
 #   maestrodev/maven
 #
 define java_web_application_server::maven (
-  $name,
-  $tomcat_libraries,
-  $application_root,
-  $instance_basedir = '/srv/tomcat',
-  $ensure           = 'present') {
-
-  # Get the hash key
-  $key = split($name, '_')
-
-  # tomcat_libraries must be a hash
-  validate_hash($tomcat_libraries)
-
-  # Application root cannot have apaces
-  validate_re($application_root, '^[\S]+$')
+  $war_name,
+  $groupid,
+  $artifactid,
+  $version,
+  $maven_repo,
+  $catalina_base,
+  $packaging = 'jar',
+  $ensure    = 'present') {
 
   # Validate Maven coordinates and other strings
-  validate_string($tomcat_libraries[$key[1]]['groupid'])
+  validate_string($groupid)
+  validate_string($artifactid)
+  validate_string($version)
+  validate_string($catalina_base)
+  validate_string($maven_repo)
 
-  validate_string($tomcat_libraries[$key[1]]['artifactid'])
-  validate_string($tomcat_libraries[$key[1]]['version'])
-  validate_string($tomcat_libraries[$key[1]]['packaging'])
-
-  # Validate repos are an array
-  validate_array($tomcat_libraries[$key[1]]['repos'])
-
-  # Create local vars from hash
-  $groupid    = $tomcat_libraries[$key[1]]['groupid']
-  $artifactid = $tomcat_libraries[$key[1]]['artifactid']
-  $version    = $tomcat_libraries[$key[1]]['version']
-  $packaging  = $tomcat_libraries[$key[1]]['packaging']
-  $repos      = $tomcat_libraries[$key[1]]['repos']
-
-  validate_string($instance_basedir)
-
-  # Check ensure types
-  validate_re($ensure, [
-    'present',
-    'installed',
-    'absent'
+  validate_re($packaging, [
+    'war',
+    'ear',
+    'jar'
     ])
 
-  # Normalize the Maven directory
-  $maven_location =
-    "${instance_basedir}/${application_root}/lib/${artifactid}-${version}.${packaging}"
+  $_group_id = regsubst($groupid, '\.', '/', 'G')
 
-  maven {$maven_location:
-    groupid    => $groupid,
-    artifactid => $artifactid,
-    version    => $version,
-    repos      => $repos,
+  $application_url =
+    "${maven_repo}/${_group_id}/${artifactid}/${version}/${artifactid}-${version}.${packaging}"
+
+  ::wget::fetch { $application_url:
+    destination => "${catalina_base}/webapps/${war_name}", 
+    cache_dir   => '/var/cache/wget',
+    cache_file  => "${artifactid}-${version}.${packaging}",
+    execuser   => 'tomcat',
   }
+
+#  ::tomcat::war { "${catalina_base}-${name}.war" :
+#    catalina_base => $catalina_base,
+#    war_source    => $application_url,
+#    war_name      => $war_name, 
+#  }
 }
